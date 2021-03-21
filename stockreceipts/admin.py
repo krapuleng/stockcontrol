@@ -5,11 +5,6 @@ from stocktransactions.models import StockTransactions , StockTransactionlines
 class StockTransactionlinesInline(admin.TabularInline):
     model = StockTransactionlines
 
-class StockTransactionlinese(admin.ModelAdmin):
-    list_filter=('datenew')
-    model = StockTransactionlines
-
-@admin.register(StockTransactions)
 class StockTransactionsAdmin(admin.ModelAdmin):
     inlines = [StockTransactionlinesInline]
 

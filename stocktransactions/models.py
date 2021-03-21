@@ -1,27 +1,31 @@
 import uuid
 
 from django.db import models
-from stockreceipts.models import Products
+from stockreceipts.models import Products, Stockdiary
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.utils.timezone import now
-from datetime import datetime    
+from datetime import datetime
+    
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Create your models here.
 class StockTransactionlines(models.Model):
     id = models.AutoField( db_column='ID', primary_key=True, editable= False)   
     StockTransaction = models.ForeignKey('StockTransactions', models.DO_NOTHING, db_column='StockTransaction')  # Field name made lowercase.
-    line = models.IntegerField(db_column='LINE',blank=True, null=True, editable=False)  # Field name made lowercase.
     product = models.ForeignKey(Products, models.DO_NOTHING, db_column='PRODUCT', blank=True, null=True)  # Field name made lowercase.
     units = models.FloatField(db_column='UNITS')  # Field name made lowercase.
     LinePrice = models.FloatField(db_column='LINEPRICE')  # Field name made lowercase.
+    stockdiary = models.OneToOneField(Stockdiary, on_delete=models.CASCADE, null=True, blank=True)
+    
     def __str__(self):
         return f'{self.product.name}'
 
     class Meta:
         managed = True
-        db_table = 'StockTransactionLINES'
-        unique_together = (('StockTransaction', 'line'),)
+        db_table = 'StockTransactionLines'
+        unique_together = (('StockTransaction', 'id'),)
         
 class StockTransactions(models.Model):
     id = models.CharField(default=uuid.uuid4, db_column='ID', primary_key=True, max_length=255,editable= False)  
