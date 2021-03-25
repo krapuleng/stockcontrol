@@ -378,10 +378,10 @@ class Sharedtickets(models.Model):
 
 class Stockcurrent(models.Model):
     location = models.ForeignKey(Locations, models.DO_NOTHING, db_column='LOCATION')  # Field name made lowercase.
-    product = models.ForeignKey(Products, models.DO_NOTHING, db_column='PRODUCT')  # Field name made lowercase.
+    product = models.OneToOneField(Products, models.DO_NOTHING, db_column='PRODUCT',primary_key=True)  # Field name made lowercase.
     attributesetinstance = models.ForeignKey(Attributesetinstance, models.DO_NOTHING, db_column='ATTRIBUTESETINSTANCE_ID', blank=True, null=True)  # Field name made lowercase.
     units = models.FloatField(db_column='UNITS')  # Field name made lowercase.
-    id = models.CharField(db_column='ID', max_length=255, primary_key=True)  # Field name made lowercase.
+    id = models.CharField(db_column='ID', max_length=255)  # Field name made lowercase.
     def __str__(self):
         return str(self.product.name) + " "+str(self.units)
         pass
@@ -400,6 +400,8 @@ class Stockdiary(models.Model):
     attributesetinstance = models.ForeignKey(Attributesetinstance, models.DO_NOTHING, db_column='ATTRIBUTESETINSTANCE_ID', blank=True, null=True)  # Field name made lowercase.
     units = models.FloatField(db_column='UNITS')  # Field name made lowercase.
     price = models.FloatField(db_column='PRICE')  # Field name made lowercase.
+    costprice = models.FloatField(db_column='COSTPRICE')  # Field name made lowercase.
+
     def __str__(self):
         return str(self.datenew) +"  "+ str(self.product.name) +" "+str(self.reason)
         pass
