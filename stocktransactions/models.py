@@ -42,18 +42,25 @@ class StockTransactions(models.Model):
 
     StockTransactiontype = models.IntegerField(db_column='STOCKTRANSACTIONTYPE',choices=status_choices,default=PURCHASES)  # Field name made lowercase.
     person = models.ForeignKey(User, models.DO_NOTHING, db_column='PERSON',default=0)  # Field name made lowercase.
-    status = models.IntegerField(db_column='STATUS', default=0)  # Field name made lowercase.  # Field name made lowercase.
+    status = models.IntegerField(db_column='STATUS', default=0, editable="false")  # Field name made lowercase.  # Field name made lowercase.
     
     datenew = models.DateTimeField(db_column='DATENEW', default=datetime.now(), editable=True)  # Field name made lowercase.
-    
-    
+   
     def __str__(self):
         return str(self.datenew) +"   "+ str(self.person) +"   "+str(self.status)
         pass
+
     class Meta:
         managed = True
         db_table = 'StockTransactions'
         verbose_name_plural='StockTransactions'
+        ordering = ('-datenew', )
+    
+    @property
+    def get_transactions_total(self):
+        transactionlines = self.stocktransactionlines_set.all()
+        total = sum([item.LinePrice for item in transactionlines])
+        return total
 
 @receiver(post_save, sender=StockTransactionlines)
 def create_stocktransactionlines(sender, instance, created, **kwargs):

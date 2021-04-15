@@ -18,9 +18,15 @@ class StockTransactionlinesInline(admin.TabularInline):
     
 @admin.register(StockTransactions)
 class StockTransactionsAdmin(admin.ModelAdmin):
+    readonly_fields= ('get_transactions_total',)
+    list_display = ("datenew",'person','get_transactions_total',)
+    list_per_page = 25
+    date_hierarchy = 'datenew'
     inlines = [StockTransactionlinesInline]
-    
 
-admin.site_header = "Inventory Management"
+    
+admin.site.site_header = "Stock Management"
+admin.site.site_title = "Stock ManagementPortal"
+admin.site.index_title = "Stock Management Portal"
 
 

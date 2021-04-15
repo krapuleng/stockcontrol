@@ -25,12 +25,18 @@ SECRET_KEY = '=*zg552w=4^a15(4)!wp=iv3)f+$9$c73yt9804m5*(6t4!jd4'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+     # General use templates & template tags (should appear first)
+     #'adminlte3',
+     # Optional: Django admin theme (must be before django.contrib.admin)
+    #'adminlte3_theme',
+    #'suit',
+    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -38,7 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'stockreceipts',
-    'stocktransactions'
+    'stocktransactions',
+    'status',
 ]
 
 MIDDLEWARE = [
@@ -110,6 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
+
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -124,4 +132,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
+STATIC_URL = os.path.join(BASE_DIR,'staticfiles')
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR,'static'),
+)
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = MEDIA_URL
+
